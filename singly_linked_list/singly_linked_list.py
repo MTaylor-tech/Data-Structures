@@ -66,4 +66,4 @@ class LinkedList:
         return value
 
     def pop(self):
-        self.remove_tail()
+        return self.remove_tail()
