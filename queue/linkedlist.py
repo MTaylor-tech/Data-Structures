@@ -9,13 +9,20 @@ class LinkedList:
         self.tail = None
         self.length = 0
 
+    def __len__(self):
+        return self.length
+
     def append(self, value):
-        self.add_to_tail(value)
+        return self.add_to_tail(value)
+
+    def push(self, value):
+        return self.add_to_tail(value)
 
     def add_to_tail(self, value):
         new_node = Node(value)
         self.add_node_to_tail(new_node)
         self.length += 1
+        return self.length
 
     def add_node_to_tail(self, node):
         if self.tail is not None:
@@ -23,6 +30,9 @@ class LinkedList:
         else:
             self.add_node_to_head(node)
         self.tail = node
+
+    def unshift(self, value):
+        return self.add_to_head(value)
 
     def add_node_to_head(self, node):
         if self.head is not None:
@@ -33,6 +43,10 @@ class LinkedList:
         new_node = Node(value)
         self.add_node_to_head(new_node)
         self.length += 1
+        return self.length
+
+    def shift(self):
+        return self.remove_head()
 
     def remove_head(self):
         value = None
@@ -61,9 +75,20 @@ class LinkedList:
                 j.next = None
             self.tail = j
             value = old_tail.value
+            self.length -= 1
             if self.head is old_tail:
                 self.head = None
         return value
 
     def pop(self):
         return self.remove_tail()
+
+    def remove(self, index):
+        node = self.head
+        last = self.head
+        for i in range(1, index-1):
+            node = node.next
+            if i == index-1:
+                node.next = node.next.next
+        self.length -= 1
+        return self.length

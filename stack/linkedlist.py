@@ -9,6 +9,9 @@ class LinkedList:
         self.tail = None
         self.length = 0
 
+    def __len__(self):
+        return self.length
+
     def append(self, value):
         self.add_to_tail(value)
 

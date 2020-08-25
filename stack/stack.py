@@ -15,7 +15,7 @@ from linkedlist import LinkedList
 class Stack:
     def __init__(self):
         self.size = 0
-        # self.storage = []
+        #self.storage = []
         self.storage = LinkedList()
 
     def __len__(self):
