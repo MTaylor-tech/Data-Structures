@@ -1,7 +1,7 @@
 """
-Binary search trees are a data structure that enforce an ordering over 
-the data they store. That ordering in turn makes it a lot more efficient 
-at searching for a particular piece of data in the tree. 
+Binary search trees are a data structure that enforce an ordering over
+the data they store. That ordering in turn makes it a lot more efficient
+at searching for a particular piece of data in the tree.
 
 This part of the project comprises two days:
 1. Implement the methods `insert`, `contains`, `get_max`, and `for_each`
@@ -17,20 +17,52 @@ class BSTNode:
 
     # Insert the given value into the tree
     def insert(self, value):
-        pass
+        if self.value is not None:
+            if value < self.value:
+                if self.left is not None:
+                    self.left.insert(value)
+                else:
+                    self.left = BSTNode(value)
+            elif value >= self.value:
+                if self.right is not None:
+                    self.right.insert(value)
+                else:
+                    self.right = BSTNode(value)
+        else:
+            self.value = value
 
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
-        pass
+        if self.value == target:
+            return True
+        elif target < self.value and self.left is not None:
+            return self.left.contains(target)
+        elif target > self.value and self.right is not None:
+            return self.right.contains(target)
+        else:
+            return False
 
     # Return the maximum value found in the tree
     def get_max(self):
-        pass
+        if self.right is not None:
+            return self.right.get_max()
+        else:
+            return self.value
+
+    def get_min(self):
+        if self.left is not None:
+            return self.left.get_max()
+        else:
+            return self.value
 
     # Call the function `fn` on the value of each node
     def for_each(self, fn):
-        pass
+        fn(self.value)
+        if self.left is not None:
+            self.left.for_each(fn)
+        if self.right is not None:
+            self.right.for_each(fn)
 
     # Part 2 -----------------------
 
@@ -59,27 +91,27 @@ class BSTNode:
     # Print Post-order recursive DFT
     def post_order_dft(self):
         pass
-
-"""
-This code is necessary for testing the `print` methods
-"""
-bst = BSTNode(1)
-
-bst.insert(8)
-bst.insert(5)
-bst.insert(7)
-bst.insert(6)
-bst.insert(3)
-bst.insert(4)
-bst.insert(2)
-
-bst.bft_print()
-bst.dft_print()
-
-print("elegant methods")
-print("pre order")
-bst.pre_order_dft()
-print("in order")
-bst.in_order_dft()
-print("post order")
-bst.post_order_dft()  
+#
+# """
+# This code is necessary for testing the `print` methods
+# """
+# bst = BSTNode(1)
+#
+# bst.insert(8)
+# bst.insert(5)
+# bst.insert(7)
+# bst.insert(6)
+# bst.insert(3)
+# bst.insert(4)
+# bst.insert(2)
+#
+# bst.bft_print()
+# bst.dft_print()
+#
+# print("elegant methods")
+# print("pre order")
+# bst.pre_order_dft()
+# print("in order")
+# bst.in_order_dft()
+# print("post order")
+# bst.post_order_dft()
