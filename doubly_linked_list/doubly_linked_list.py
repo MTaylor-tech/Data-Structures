@@ -30,11 +30,11 @@ class DoublyLinkedList:
         node = ListNode(value)
         return self.add_node_to_head(node)
 
-    def add_node_to_head(self, node):
-        if self.head is None:
+    def add_node_to_head(self, node): # separate fn b/c it makes moving easier
+        if self.head is None: # list is empty, so becomes list of 1
             self.head = node
             self.tail = node
-        else:
+        else: # general case
             self.head.prev = node
             node.next = self.head
             self.head = node
@@ -47,15 +47,15 @@ class DoublyLinkedList:
     Returns the value of the removed Node.
     """
     def remove_from_head(self):
-        if self.length <= 0:
+        if self.length <= 0: # list is empty
             return None
-        elif self.length == 1:
+        elif self.length == 1: # if list has 1 node, remove it and clear the list
             value = self.head.value
             self.head = None
             self.tail = None
             self.length -= 1
             return value
-        else:
+        else: # general case
             value = self.head.value
             new_head = self.head.next
             new_head.prev = None
@@ -113,7 +113,7 @@ class DoublyLinkedList:
     """
     def move_to_front(self, node):
         self.delete(node)
-        self.add_node_to_head(node)
+        self.add_node_to_head(node) # this is where the separate fn saves us some repetition
 
     """
     Removes the input node from its current spot in the
@@ -128,35 +128,50 @@ class DoublyLinkedList:
     order of the other elements of the List.
     """
     def delete(self, node):
-        if self.head is None:
+        if self.head is None: # empty list
             return None
-        if self.length == 1:
-            value = self.head.value
-            self.head = None
-            self.tail = None
-            self.length = 0
-            return value
-        current_node = self.head
-        for i in range(self.length):
-            if current_node is node:
-                break
+        if self.length == 1: # single node
+            if self.head is node:
+                value = self.head.value
+                self.head = None
+                self.tail = None
+                self.length = 0
+                return value
             else:
-                current_node = current_node.next
-        previous = current_node.prev
-        next = current_node.next
-        value = current_node.value
-        if previous is not None:
-            previous.next = next
-            if current_node is self.tail:
-                self.tail = previous
-        if next is not None:
-            next.prev = previous
-            if current_node is self.head:
-                self.head = next
-        current_node.next = None
-        current_node.prev = None
+                return None
+        # current_node = self.head
+        # for _ in range(self.length): # gotta check all the nodes
+        #     if current_node is node:
+        #         break
+        #     else:
+        #         current_node = current_node.next
+        if node.prev is not None:
+            node.prev.next = node.next
+            if node is self.tail:
+                self.tail = node.prev
+        if node.next is not None:
+            node.next.prev = node.prev
+            if node is self.head:
+                self.head = node.next
+        node.prev = None
+        node.next = None
         self.length -= 1
-        return value
+        return node.value
+        # previous = current_node.prev
+        # next = current_node.next
+        # value = current_node.value
+        # if previous is not None:
+        #     previous.next = next
+        #     if current_node is self.tail:
+        #         self.tail = previous
+        # if next is not None:
+        #     next.prev = previous
+        #     if current_node is self.head:
+        #         self.head = next
+        # current_node.next = None
+        # current_node.prev = None
+        # self.length -= 1
+        # return value
 
     """
     Finds and returns the maximum value of all the nodes

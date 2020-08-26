@@ -23,11 +23,15 @@ class BSTNode:
                     self.left.insert(value)
                 else:
                     self.left = BSTNode(value)
-            elif value >= self.value:
+            elif value > self.value:
                 if self.right is not None:
                     self.right.insert(value)
                 else:
                     self.right = BSTNode(value)
+            elif value == self.value:
+                new_node = BSTNode(value)
+                new_node.right = self.right
+                self.right = new_node
         else:
             self.value = value
 
@@ -69,17 +73,64 @@ class BSTNode:
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self):
-        pass
+        if self.left is not None:
+            self.left.in_order_print()
+        print(self.value)
+        if self.right is not None:
+            self.right.in_order_print()
+
+    def in_order_dft(self):
+        if self.left is not None:
+            self.left.in_order_dft()
+        print(self.value)
+        if self.right is not None:
+            self.right.in_order_dft()
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self):
-        pass
+        bft_set = self.bf_traverse(0)
+        for level in bft_set:
+            for value in bft_set[level]:
+                print(value)
+        # if bft_set[level] is not None:
+        #     bft_set[level].append(self.value)
+        # else:
+        #     bft_set[level] = [self.value]
+        # if self.left is not None:
+        #     left_set = self.left.bft_print(self.value)
+        # pass
+
+    def bf_traverse(self, level=0):
+        bft_set = {}
+        bft_set[level] = [self.value]
+        if self.left is not None:
+            left_set = self.left.bf_traverse(level+1)
+            for left_level in left_set:
+                # if bft_set[left_level] is not None:
+                if left_level in bft_set:
+                    bft_set[left_level].extend(left_set[left_level])
+                else:
+                    bft_set[left_level] = left_set[left_level]
+        if self.right is not None:
+            right_set = self.right.bf_traverse(level+1)
+            for right_level in right_set:
+                # if bft_set[right_level] is not None:
+                if right_level in bft_set:
+                    bft_set[right_level].extend(right_set[right_level])
+                else:
+                    bft_set[right_level] = right_set[right_level]
+        # print(f"Level: {level}, set: {bft_set}")
+        return bft_set
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self):
-        pass
+        print(self.value)
+        if self.left is not None:
+            self.left.dft_print()
+        if self.right is not None:
+            self.right.dft_print()
 
     # Stretch Goals -------------------------
     # Note: Research may be required
@@ -91,27 +142,27 @@ class BSTNode:
     # Print Post-order recursive DFT
     def post_order_dft(self):
         pass
-#
-# """
-# This code is necessary for testing the `print` methods
-# """
-# bst = BSTNode(1)
-#
-# bst.insert(8)
-# bst.insert(5)
-# bst.insert(7)
-# bst.insert(6)
-# bst.insert(3)
-# bst.insert(4)
-# bst.insert(2)
-#
-# bst.bft_print()
-# bst.dft_print()
-#
-# print("elegant methods")
-# print("pre order")
-# bst.pre_order_dft()
-# print("in order")
-# bst.in_order_dft()
-# print("post order")
-# bst.post_order_dft()
+
+"""
+This code is necessary for testing the `print` methods
+"""
+bst = BSTNode(1)
+
+bst.insert(8)
+bst.insert(5)
+bst.insert(7)
+bst.insert(6)
+bst.insert(3)
+bst.insert(4)
+bst.insert(2)
+
+bst.bft_print()
+bst.dft_print()
+
+print("elegant methods")
+print("pre order")
+bst.pre_order_dft()
+print("in order")
+bst.in_order_dft()
+print("post order")
+bst.post_order_dft()
