@@ -12,30 +12,52 @@ class LinkedList:
     def __len__(self):
         return self.length
 
+    def __str__(self):
+        value = "["
+        pointer = self.head
+        for i in range(0,self.length-1):
+            value += f"{pointer.value}, "
+            pointer = pointer.next
+        if pointer is not None and pointer is not self.head:
+            value += f"{pointer.value}"
+        value += "]"
+        return value
+
     def append(self, value):
-        self.add_to_tail(value)
+        return self.add_to_tail(value)
+
+    def push(self, value):
+        return self.add_to_tail(value)
 
     def add_to_tail(self, value):
         new_node = Node(value)
-        self.add_node_to_tail(new_node)
-        self.length += 1
+        return self.add_node_to_tail(new_node)
 
     def add_node_to_tail(self, node):
         if self.tail is not None:
             self.tail.next = node
+            self.length += 1
         else:
             self.add_node_to_head(node)
         self.tail = node
+        return self.length
+
+    def unshift(self, value):
+        return self.add_to_head(value)
 
     def add_node_to_head(self, node):
         if self.head is not None:
             node.next = self.head
         self.head = node
+        self.length += 1
+        return self.length
 
     def add_to_head(self, value):
         new_node = Node(value)
-        self.add_node_to_head(new_node)
-        self.length += 1
+        return self.add_node_to_head(new_node)
+
+    def shift(self):
+        return self.remove_head()
 
     def remove_head(self):
         value = None
@@ -64,9 +86,24 @@ class LinkedList:
                 j.next = None
             self.tail = j
             value = old_tail.value
+            self.length -= 1
             if self.head is old_tail:
                 self.head = None
         return value
 
     def pop(self):
         return self.remove_tail()
+
+    def remove_at_index(self, index):
+        if self.length > index:
+            node = self.head
+            for i in range(index-1):
+                node = node.next
+            to_remove = node.next
+            value = to_remove.value
+            node.next = to_remove.next
+            to_remove.next = None
+            self.length -= 1
+            return value
+        else:
+            return None
